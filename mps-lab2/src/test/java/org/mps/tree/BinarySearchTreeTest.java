@@ -38,19 +38,96 @@ public class BinarySearchTreeTest {
             //Arrange
             tree = new BinarySearchTree<>(comparator);
         }
+
+        @DisplayName("Renderizar un árbol vacío")
+        @Test
+        public void render_EmptyBST_ReturnsEmptyString() {  
+            //Arrange
+            String esperado = "";
+            
+            //Act
+            String resultado = tree.render();
+
+            //Asert
+            assertEquals(esperado, resultado);
+        }
+
+        @DisplayName("Renderizar un árbol de un solo nodo")
+        @Test
+        public void render_OneNodeBST_ReturnsStringOfValueOfBST() {  
+            //Arrange
+            tree.insert(10);
+            String esperado = "10";
+            
+            //Act
+            String resultado = tree.render();
+
+            //Asert
+            assertEquals(esperado, resultado);
+        }
+
+        @DisplayName("Renderizar un árbol con la rama izquierda vacía")
+        @Test
+        public void render_MultipleNodeEmptyLeftBranch_ReturnsBSTStringWitheLeftBranchEmpty() {  
+            //Arrange
+            tree.insert(10);
+            tree.insert(15);
+            String esperado = "10(,15)";
+            
+            //Act
+            String resultado = tree.render();
+
+            //Asert
+            assertEquals(esperado, resultado);
+        }
+
+        @DisplayName("Renderizar un árbol con la rama derecha vacía")
+        @Test
+        public void render_MultipleNodeEmptyRightBranch_ReturnsBSTStringWitheRightBranchEmpty() {  
+            //Arrange
+            tree.insert(10);
+            tree.insert(5);
+            String esperado = "10(5,)";
+            
+            //Act
+            String resultado = tree.render();
+
+            //Asert
+            assertEquals(esperado, resultado);
+        }
+
+        @DisplayName("Renderizar un árbol con la rama derecha e izquierda con nodos")
+        @Test
+        public void render_MultipleNodeNotEmptyRightLeftBranch_ReturnsBSTStringWitheRightBranchAndLeftBracnh() {  
+            //Arrange
+            tree.insert(10);
+            tree.insert(5);
+            tree.insert(15);
+            String esperado = "10(5,15)";
+            
+            //Act
+            String resultado = tree.render();
+
+            //Asert
+            assertEquals(esperado, resultado);
+        }
     }
 
 
     @DisplayName("Probando el constructor BinarySearchTree")
     @Nested
     public class BinarySearchTreeConstructorTest {
-        private BinarySearchTree<Integer> tree;
-
-        @DisplayName("Se inicializa el BinarySearchTree con el comparator")
-        @BeforeEach
-        public void startUp() {
+        @DisplayName("El constructor crea un árbol de búsqueda binaria vacío")
+        @Test
+        public void BinarySearchTree_init_CreatesEmptyBinarySearchTree() {
             //Arrange
-            tree = new BinarySearchTree<>(comparator);
+            String expected = "";
+
+            //Act
+            BinarySearchTree<Integer> tree = new BinarySearchTree<>(comparator);
+
+            //Asert
+            assertEquals(expected, tree.render());
         }
     }
 
@@ -78,19 +155,79 @@ public class BinarySearchTreeTest {
                 tree.insert(value);
             });
         }
-/*
+
         @DisplayName("El metodo insert crea un nodo si el árbol está vacío")
         @Test
         public void insert_EmptyTree_CreatesNode() {
             //Arrange
+            Integer value = 10;
+
+            //Act
+            tree.insert(value);
+
+            //Assert
+            assertEquals("10", tree.render());
+        }
+
+        @DisplayName("El metodo insert crea un nodo a la derecha si el árbol no está vacío, la rama de la derecha está vacía y el elemento es mayor a la raíz")
+        @Test
+        public void insert_NotEmptyTreeEmptyRightBranchNewValueBiggerRoot_CreatesNodeRight() {
+            //Arrange
+            tree.insert(10);
+            Integer value = 15;
+
+            //Act
+            tree.insert(value);
+
+            //Assert
+            assertEquals("10(,15)", tree.render());
+        }
+
+        @DisplayName("El metodo insert crea un nodo a la izquierda si el árbol no está vacío, la rama de la izquierda está vacía y el elemento es menor a la raíz")
+        @Test
+        public void insert_NotEmptyTreeEmptyLeftBranchNewValueLowerRoot_CreatesNodeLeft() {
+            //Arrange
+            tree.insert(10);
             Integer value = 5;
 
             //Act
-            tree.insert(10);
+            tree.insert(value);
 
             //Assert
-            assertEquals("5()", tree.render());
-        }*/
+            assertEquals("10(5,)", tree.render());
+        }
+
+        @DisplayName("El metodo insert crea un nodo en la rama de la izquierda si el árbol no tiene vacía rama derecha e izquierda, y el valor a insertar es menor a la raíz")
+        @Test
+        public void insert_MultipleNodesTreeNotEmptyLeftRightBranchNewValueLowerRoot_CreatesNodeBranchLeft() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(5);
+            tree.insert(15);
+            Integer value = 3;
+
+            //Act
+            tree.insert(value);
+
+            //Assert
+            assertEquals("10(5(3,),15)", tree.render());
+        }
+
+        @DisplayName("El metodo insert crea un nodo en la rama de la derecha si el árbol no tiene vacía rama derecha e izquierda, y el valor a insertar es mayor a la raíz")
+        @Test
+        public void insert_MultipleNodesTreeNotEmptyLeftRightBranchNewValueBiggerRoot_CreatesNodeBranchRight() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(5);
+            tree.insert(15);
+            Integer value = 12;
+
+            //Act
+            tree.insert(value);
+
+            //Assert
+            assertEquals("10(5,15(12,))", tree.render());
+        }
     }
 
     @DisplayName("Probando el metodo isLeaf")
@@ -438,7 +575,7 @@ public class BinarySearchTreeTest {
 
         @DisplayName("El metodo removeBranch lanza una excepción si el arbol no contiene el elemento")
         @Test
-        public void removeBranch_MultipleNodesTree_ElementNotPresent_ReturnsException() {
+        public void removeBranch_MultipleNodesTreeElementNotPresent_ReturnsException() {
             //Arrange
             tree.insert(10);
             tree.insert(13);

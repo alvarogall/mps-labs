@@ -55,7 +55,7 @@ public class BinarySearchTree<T> implements BinarySearchTreeStructure<T> {
             } else {
                 left.insert(value);
             }
-        } else if(comparator.compare(this.value, value) < 0) {
+        } else {
             if(right == null) {
                 right = new BinarySearchTree<>(this.comparator);
                 right.insert(value);
