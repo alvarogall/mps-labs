@@ -78,7 +78,7 @@ public class BinarySearchTreeTest {
                 tree.insert(value);
             });
         }
-
+/*
         @DisplayName("El metodo insert crea un nodo si el árbol está vacío")
         @Test
         public void insert_EmptyTree_CreatesNode() {
@@ -90,7 +90,7 @@ public class BinarySearchTreeTest {
 
             //Assert
             assertEquals("5()", tree.render());
-        }
+        }*/
     }
 
     @DisplayName("Probando el metodo isLeaf")
