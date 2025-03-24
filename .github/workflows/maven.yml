@@ -16,8 +16,12 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project:
+          - mps-lab1
+          - mps-lab2
 
     steps:
     - uses: actions/checkout@v4
@@ -27,5 +31,7 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
+
+    - name: Build Project
       run: mvn -B package --file pom.xml
+      working-directory: ${{ matrix.project }}
