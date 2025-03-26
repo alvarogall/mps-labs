@@ -746,4 +746,40 @@ public class BinarySearchTreeTest {
             assertEquals(expected, depth);
         }
     }
+
+    @DisplayName("Probando el metodo removeValue")
+    @Nested
+    public class RemoveValueTest {
+        private BinarySearchTree<Integer> tree;
+
+        @DisplayName("Se inicializa el BinarySearchTree con el comparator")
+        @BeforeEach
+        public void setUp() {
+            tree = new BinarySearchTree<>(comparator);
+        }
+    }
+
+    @DisplayName("Probando el metodo inOrder")
+    @Nested
+    public class InOrderTest {
+        private BinarySearchTree<Integer> tree;
+
+        @DisplayName("Se inicializa el BinarySearchTree con el comparator")
+        @BeforeEach
+        public void setUp() {
+            tree = new BinarySearchTree<>(comparator);
+        }
+    }
+
+    @DisplayName("Probando el metodo balance")
+    @Nested
+    public class BalanceTest {
+        private BinarySearchTree<Integer> tree;
+
+        @DisplayName("Se inicializa el BinarySearchTree con el comparator")
+        @BeforeEach
+        public void setUp() {
+            tree = new BinarySearchTree<>(comparator);
+        }
+    }
 }

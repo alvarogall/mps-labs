@@ -66,6 +66,16 @@ public class BinarySearchTreeMain {
                 System.out.println("Excepción capturada: " + e.getMessage());
             }
 
+            // Probar inOrder
+            bst = new BinarySearchTree<>(intComparator);
+            bst.insert(5);
+            bst.insert(3);
+            bst.insert(7);
+            bst.insert(1);
+            bst.insert(9);
+            
+            System.out.println("Recorrido inOrder: " + bst.inOrder());
+
         } catch (Exception e) {
             System.out.println("Se produjo una excepción inesperada: " + e.getMessage());
         }

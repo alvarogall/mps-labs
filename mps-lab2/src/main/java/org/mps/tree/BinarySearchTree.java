@@ -1,11 +1,14 @@
 package org.mps.tree;
 
+import java.util.ArrayList;
+
 /**
  * @author Pablo Gámez Guerrero
  * @author Álvaro Gallardo Rubio
  */
 
 import java.util.Comparator;
+import java.util.List;
 
 public class BinarySearchTree<T> implements BinarySearchTreeStructure<T> {
     private Comparator<T> comparator;
@@ -178,7 +181,32 @@ public class BinarySearchTree<T> implements BinarySearchTreeStructure<T> {
         return profundidad;
     }
 
-    // Complex operations
-    // (Estas operaciones se incluirán más adelante para ser realizadas en la segunda
-    // sesión de laboratorio de esta práctica)
+    @Override
+    public void removeValue(T value) {
+
+    }
+
+    @Override
+    public List<T> inOrder() {
+        List<T> lista = new ArrayList<>();
+
+        if(this.value != null) {
+            if(this.left != null) {
+                lista.addAll(this.left.inOrder());
+            }
+
+            lista.add(this.value);
+
+            if(this.right != null) {
+                lista.addAll(this.right.inOrder());
+            }
+        }
+
+        return lista;
+    }
+
+    @Override
+    public void balance() {
+        
+    }
 }
