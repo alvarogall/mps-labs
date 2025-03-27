@@ -199,9 +199,12 @@ public class BinarySearchTree<T> implements BinarySearchTreeStructure<T> {
         }
 
         BinarySearchTree<T> arbol = removeValueHelper(value);
-        this.value = arbol.value;
-        this.left = arbol.left;
-        this.right = arbol.right;
+
+        if(arbol != null) {
+            this.value = arbol.value;
+            this.left = arbol.left;
+            this.right = arbol.right;
+        }
     }
 
     private BinarySearchTree<T> removeValueHelper(T value) {
@@ -258,9 +261,13 @@ public class BinarySearchTree<T> implements BinarySearchTreeStructure<T> {
     public void balance() {
         List<T> nodes = inOrder();
         BinarySearchTree<T> balancedTree = buildBalancedTree(nodes, 0, nodes.size() - 1);
-        this.value = balancedTree.value;
-        this.left = balancedTree.left;
-        this.right = balancedTree.right;
+
+        if(balancedTree != null) {
+            this.value = balancedTree.value;
+            this.left = balancedTree.left;
+            this.right = balancedTree.right;
+        }
+        
     }
 
     private BinarySearchTree<T> buildBalancedTree(List<T> nodes, int start, int end) {

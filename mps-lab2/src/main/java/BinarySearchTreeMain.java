@@ -92,7 +92,6 @@ public class BinarySearchTreeMain {
             System.out.println("Eliminado el 3: " + bst.render());
 
             bst.removeValue(7);
-            System.out.println();
             System.out.println("Eliminado el 7: " + bst.render());
 
             // Probar balance
@@ -106,6 +105,13 @@ public class BinarySearchTreeMain {
             bst.insert(3);
 
             System.out.println(bst.render());
+            bst.balance();
+            System.out.println(bst.render());
+
+            bst = new BinarySearchTree<>(intComparator);
+            bst.insert(9);
+            bst.insert(10);
+            bst.insert(8);
             bst.balance();
             System.out.println(bst.render());
 
