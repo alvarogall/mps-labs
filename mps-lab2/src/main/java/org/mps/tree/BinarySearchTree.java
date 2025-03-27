@@ -137,14 +137,21 @@ public class BinarySearchTree<T> implements BinarySearchTreeStructure<T> {
         }
 
         if(this.comparator.compare(this.value, value) == 0) {
-            this.comparator = null;
             this.value = null;
             this.right = null;
             this.left = null;
         } else if(comparator.compare(this.value, value) < 0) {
-            this.right.removeBranch(value);
+            if(comparator.compare(this.right.value, value) == 0) {
+                this.right = null;
+            } else {
+                this.right.removeBranch(value);
+            }
         } else {
-            this.left.removeBranch(value);
+            if(comparator.compare(this.left.value, value) == 0) {
+                this.left = null;
+            } else {
+                this.left.removeBranch(value);
+            }
         }
     }
 
@@ -183,8 +190,50 @@ public class BinarySearchTree<T> implements BinarySearchTreeStructure<T> {
 
     @Override
     public void removeValue(T value) {
+        if (this.value == null) {
+            throw new BinarySearchTreeException("El árbol está vacío");
+        }
 
+        if (!contains(value)) {
+            throw new BinarySearchTreeException("El árbol no contiene el elemento");
+        }
+
+        BinarySearchTree<T> arbol = removeValueHelper(value);
+        this.value = arbol.value;
+        this.left = arbol.left;
+        this.right = arbol.right;
     }
+
+    private BinarySearchTree<T> removeValueHelper(T value) {
+        if (this.value == null) {
+            return this;
+        }
+
+        if (comparator.compare(this.value, value) > 0) {
+            if (this.left != null) {
+                this.left = this.left.removeValueHelper(value);
+            }
+        } else if (comparator.compare(this.value, value) < 0) {
+            if (this.right != null) {
+                this.right = this.right.removeValueHelper(value);
+            }
+        } else {
+            if (this.left == null) {
+                return this.right;
+            }
+
+            if (this.right == null) {
+                return this.left;
+            }
+
+            T minValue = this.right.minimum();
+            this.value = minValue;
+            this.right = this.right.removeValueHelper(minValue);
+        }
+
+        return this;
+    }
+
 
     @Override
     public List<T> inOrder() {
@@ -207,6 +256,24 @@ public class BinarySearchTree<T> implements BinarySearchTreeStructure<T> {
 
     @Override
     public void balance() {
+        List<T> nodes = inOrder();
+        BinarySearchTree<T> balancedTree = buildBalancedTree(nodes, 0, nodes.size() - 1);
+        this.value = balancedTree.value;
+        this.left = balancedTree.left;
+        this.right = balancedTree.right;
+    }
+
+    private BinarySearchTree<T> buildBalancedTree(List<T> nodes, int start, int end) {
+        if (start > end) {
+            return null;
+        }
         
+        int mid = (start + end) / 2;
+        BinarySearchTree<T> root = new BinarySearchTree<>(this.comparator);
+        root.value = nodes.get(mid);
+        root.left = buildBalancedTree(nodes, start, mid - 1);
+        root.right = buildBalancedTree(nodes, mid + 1, end);
+
+        return root;
     }
 }

@@ -76,6 +76,39 @@ public class BinarySearchTreeMain {
             
             System.out.println("Recorrido inOrder: " + bst.inOrder());
 
+            // Probar removeValue
+            bst = new BinarySearchTree<>(intComparator);
+            bst.insert(5);
+            bst.insert(3);
+            bst.insert(7);
+            bst.insert(1);
+
+            System.out.println(bst.render());
+
+            bst.removeValue(5);
+            System.out.println("Eliminado el 5: " + bst.render());
+
+            bst.removeValue(3);
+            System.out.println("Eliminado el 3: " + bst.render());
+
+            bst.removeValue(7);
+            System.out.println();
+            System.out.println("Eliminado el 7: " + bst.render());
+
+            // Probar balance
+            bst = new BinarySearchTree<>(intComparator);
+            bst.insert(10);
+            bst.insert(9);
+            bst.insert(8);
+            bst.insert(6);
+            bst.insert(5);
+            bst.insert(4);
+            bst.insert(3);
+
+            System.out.println(bst.render());
+            bst.balance();
+            System.out.println(bst.render());
+
         } catch (Exception e) {
             System.out.println("Se produjo una excepción inesperada: " + e.getMessage());
         }
