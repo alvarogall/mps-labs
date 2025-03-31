@@ -2,11 +2,6 @@ package org.mps.tree;
 
 import java.util.ArrayList;
 
-/**
- * @author Pablo Gámez Guerrero
- * @author Álvaro Gallardo Rubio
- */
-
 import java.util.Comparator;
 import java.util.List;
 
@@ -198,45 +193,39 @@ public class BinarySearchTree<T> implements BinarySearchTreeStructure<T> {
             throw new BinarySearchTreeException("El árbol no contiene el elemento");
         }
 
-        BinarySearchTree<T> arbol = removeValueHelper(value);
-
-        if(arbol != null) {
-            this.value = arbol.value;
-            this.left = arbol.left;
-            this.right = arbol.right;
-        }
-    }
-
-    private BinarySearchTree<T> removeValueHelper(T value) {
-        if (this.value == null) {
-            return this;
-        }
-
         if (comparator.compare(this.value, value) > 0) {
-            if (this.left != null) {
-                this.left = this.left.removeValueHelper(value);
+            this.left.removeValue(value);
+            if (this.left.value == null) {
+                this.left = null;
             }
         } else if (comparator.compare(this.value, value) < 0) {
-            if (this.right != null) {
-                this.right = this.right.removeValueHelper(value);
+            this.right.removeValue(value);
+            if (this.right.value == null) {
+                this.right = null;
             }
         } else {
-            if (this.left == null) {
-                return this.right;
+            if (this.left == null && this.right == null) {
+                this.value = null;
+                this.left = null;
+                this.right = null;
+            } else if (this.left == null) {
+                this.value = this.right.value;
+                this.left = this.right.left;
+                this.right = this.right.right;
+            } else if (this.right == null) {
+                this.value = this.left.value;
+                this.right = this.left.right;
+                this.left = this.left.left;
+            } else {
+                T minValue = this.right.minimum();
+                this.value = minValue;
+                this.right.removeValue(minValue);
+                if (this.right.value == null) {
+                    this.right = null;
+                }
             }
-
-            if (this.right == null) {
-                return this.left;
-            }
-
-            T minValue = this.right.minimum();
-            this.value = minValue;
-            this.right = this.right.removeValueHelper(minValue);
         }
-
-        return this;
     }
-
 
     @Override
     public List<T> inOrder() {
@@ -260,27 +249,32 @@ public class BinarySearchTree<T> implements BinarySearchTreeStructure<T> {
     @Override
     public void balance() {
         List<T> nodes = inOrder();
-        BinarySearchTree<T> balancedTree = buildBalancedTree(nodes, 0, nodes.size() - 1);
-
-        if(balancedTree != null) {
-            this.value = balancedTree.value;
-            this.left = balancedTree.left;
-            this.right = balancedTree.right;
-        }
-        
+        balanceHelper(nodes, 0, nodes.size() - 1);
     }
 
-    private BinarySearchTree<T> buildBalancedTree(List<T> nodes, int start, int end) {
+    private void balanceHelper(List<T> nodes, int start, int end) {
         if (start > end) {
-            return null;
+            this.value = null;
+            this.left = null;
+            this.right = null;
+            return;
         }
-        
-        int mid = (start + end) / 2;
-        BinarySearchTree<T> root = new BinarySearchTree<>(this.comparator);
-        root.value = nodes.get(mid);
-        root.left = buildBalancedTree(nodes, start, mid - 1);
-        root.right = buildBalancedTree(nodes, mid + 1, end);
 
-        return root;
+        int mid = (start + end) / 2;
+        this.value = nodes.get(mid);
+
+        if (start <= mid - 1) {
+            this.left = new BinarySearchTree<>(this.comparator);
+            this.left.balanceHelper(nodes, start, mid - 1);
+        } else {
+            this.left = null;
+        }
+
+        if (mid + 1 <= end) {
+            this.right = new BinarySearchTree<>(this.comparator);
+            this.right.balanceHelper(nodes, mid + 1, end);
+        } else {
+            this.right = null;
+        }
     }
 }

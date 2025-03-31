@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Comparator;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -112,7 +113,6 @@ public class BinarySearchTreeTest {
             assertEquals(esperado, resultado);
         }
     }
-
 
     @DisplayName("Probando el constructor BinarySearchTree")
     @Nested
@@ -628,6 +628,58 @@ public class BinarySearchTreeTest {
             //Assert
             assertEquals(expected, tree.render());
         }
+
+        @DisplayName("El metodo removeBranch borra correctamente la rama derecha cuando el valor coincide con el nodo derecho")
+        @Test
+        public void removeBranch_RightBranchValueMatches_RemovesRightBranch() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(15);
+            tree.insert(20);
+            Integer value = 15;
+            String expected = "10";
+
+            //Act
+            tree.removeBranch(value);
+
+            //Assert
+            assertEquals(expected, tree.render());
+        }
+
+        @DisplayName("El metodo removeBranch borra correctamente la rama izquierda cuando el valor coincide con el nodo izquierdo")
+        @Test
+        public void removeBranch_LeftBranchValueMatches_RemovesLeftBranch() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(5);
+            tree.insert(2);
+            Integer value = 5;
+            String expected = "10";
+
+            //Act
+            tree.removeBranch(value);
+
+            //Assert
+            assertEquals(expected, tree.render());
+        }
+
+        @DisplayName("El metodo removeBranch borra correctamente un nodo en un subárbol a más del segundo nivel")
+        @Test
+        public void removeBranch_DeepRightSubtree_RemovesCorrectNode() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(15);
+            tree.insert(20);
+            tree.insert(25);
+            Integer value = 20;
+            String expected = "10(,15)";
+
+            //Act
+            tree.removeBranch(value);
+
+            //Assert
+            assertEquals(expected, tree.render());
+        }
     }
 
     @DisplayName("Probando el metodo size")
@@ -755,7 +807,197 @@ public class BinarySearchTreeTest {
         @DisplayName("Se inicializa el BinarySearchTree con el comparator")
         @BeforeEach
         public void setUp() {
+            //Arrange
             tree = new BinarySearchTree<>(comparator);
+        }
+
+        @DisplayName("El metodo removeValue lanza una excepción si el árbol está vacío")
+        @Test
+        public void removeValue_EmptyTree_ThrowsException() {
+            //Act, Assert
+            assertThrows(BinarySearchTreeException.class, () -> {
+                tree.removeValue(10);
+            });
+        }
+
+        @DisplayName("El metodo removeValue lanza una excepción si el elemento no está en el árbol")
+        @Test
+        public void removeValue_ElementNotInTree_ThrowsException() {
+            //Arrange
+            tree.insert(10);
+
+            //Act, Assert
+            assertThrows(BinarySearchTreeException.class, () -> {
+                tree.removeValue(5);
+            });
+        }
+
+        @DisplayName("El metodo removeValue elimina correctamente el único nodo del árbol")
+        @Test
+        public void removeValue_SingleNodeTree_RemovesNode() {
+            //Arrange
+            tree.insert(10);
+
+            //Act
+            tree.removeValue(10);
+
+            //Assert
+            assertEquals("", tree.render());
+        }
+
+        @DisplayName("El metodo removeValue elimina un nodo sin hijos en la rama izquierda en un árbol de dos niveles")
+        @Test
+        public void removeValue_TwoLevelTree_LeftLeafNode_RemovesNode() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(5);
+
+            //Act
+            tree.removeValue(5);
+
+            //Assert
+            assertEquals("10", tree.render());
+        }
+
+        @DisplayName("El metodo removeValue elimina un nodo sin hijos en la rama derecha en un árbol de dos niveles")
+        @Test
+        public void removeValue_TwoLevelTree_RightLeafNode_RemovesNode() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(15);
+
+            //Act
+            tree.removeValue(15);
+
+            //Assert
+            assertEquals("10", tree.render());
+        }
+
+        @DisplayName("El metodo removeValue elimina un nodo con hijos en la rama izquierda en un árbol de dos niveles")
+        @Test
+        public void removeValue_TwoLevelTree_LeftNodeWithChildren_RemovesNode() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(5);
+            tree.insert(3);
+
+            //Act
+            tree.removeValue(5);
+
+            //Assert
+            assertEquals("10(3,)", tree.render());
+        }
+
+        @DisplayName("El metodo removeValue elimina un nodo con hijos en la rama derecha en un árbol de dos niveles")
+        @Test
+        public void removeValue_TwoLevelTree_RightNodeWithChildren_RemovesNode() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(15);
+            tree.insert(20);
+
+            //Act
+            tree.removeValue(15);
+
+            //Assert
+            assertEquals("10(,20)", tree.render());
+        }
+
+        @DisplayName("El metodo removeValue elimina un nodo con hijos en la rama izquierda a más del segundo nivel")
+        @Test
+        public void removeValue_LeftBranchBeyondSecondLevel_WithChildren_RemovesNode() {
+            //Arrange
+            tree.insert(20);
+            tree.insert(15);
+            tree.insert(10);
+            tree.insert(12);
+
+            //Act
+            tree.removeValue(15);
+
+            //Assert
+            assertEquals("20(10(,12),)", tree.render());
+        }
+
+        @DisplayName("El metodo removeValue elimina un nodo con hijos en la rama derecha a más del segundo nivel")
+        @Test
+        public void removeValue_RightBranchBeyondSecondLevel_WithChildren_RemovesNode() {
+            //Arrange
+            tree.insert(20);
+            tree.insert(25);
+            tree.insert(30);
+            tree.insert(28);
+
+            //Act
+            tree.removeValue(25);
+
+            //Assert
+            assertEquals("20(,30(28,))", tree.render());
+        }
+
+        @DisplayName("El metodo removeValue elimina un nodo sin hijos en la rama izquierda a más del segundo nivel")
+        @Test
+        public void removeValue_LeftBranchBeyondSecondLevel_NoChildren_RemovesNode() {
+            //Arrange
+            tree.insert(20);
+            tree.insert(15);
+            tree.insert(10);
+
+            //Act
+            tree.removeValue(10);
+
+            //Assert
+            assertEquals("20(15,)", tree.render());
+        }
+
+        @DisplayName("El metodo removeValue elimina un nodo sin hijos en la rama derecha a más del segundo nivel")
+        @Test
+        public void removeValue_RightBranchBeyondSecondLevel_NoChildren_RemovesNode() {
+            //Arrange
+            tree.insert(20);
+            tree.insert(25);
+            tree.insert(30);
+
+            //Act
+            tree.removeValue(30);
+
+            //Assert
+            assertEquals("20(,25)", tree.render());
+        }
+
+        @DisplayName("El metodo removeValue elimina un nodo con dos hijos correctamente")
+        @Test
+        public void removeValue_NodeWithTwoChildren_RemovesNode() {
+            //Arrange
+            tree.insert(20);
+            tree.insert(10);
+            tree.insert(30);
+            tree.insert(5);
+            tree.insert(15);
+            tree.insert(25);
+            tree.insert(35);
+
+            //Act
+            tree.removeValue(10);
+
+            //Assert
+            assertEquals("20(15(5,),30(25,35))", tree.render());
+        }
+
+        @DisplayName("El metodo removeValue elimina correctamente la raíz de un árbol con hijos")
+        @Test
+        public void removeValue_RemoveInOrderSuccessor_LeavesSubtreeEmpty() {
+            //Arrange
+            tree.insert(20);
+            tree.insert(10);
+            tree.insert(30);
+            tree.insert(25);
+
+            //Act
+            tree.removeValue(20);
+
+            //Assert
+            assertEquals("25(10,30)", tree.render());
         }
     }
 
@@ -769,7 +1011,80 @@ public class BinarySearchTreeTest {
         public void setUp() {
             tree = new BinarySearchTree<>(comparator);
         }
+
+        @DisplayName("El metodo inOrder devuelve una lista vacía si el árbol está vacío")
+        @Test
+        public void inOrder_EmptyTree_ReturnsEmptyList() {
+            //Act
+            List<Integer> result = tree.inOrder();
+
+            //Assert
+            assertTrue(result.isEmpty());
+        }
+
+        @DisplayName("El metodo inOrder devuelve correctamente el único nodo del árbol")
+        @Test
+        public void inOrder_OneNodeTree_ReturnsSingleElementList() {
+            //Arrange
+            tree.insert(10);
+
+            //Act
+            List<Integer> result = tree.inOrder();
+
+            //Assert
+            assertEquals(List.of(10), result);
+        }
+
+        @DisplayName("El metodo inOrder devuelve correctamente los nodos para un árbol con solo subárbol derecho")
+        @Test
+        public void inOrder_RightSubtreeOnly_ReturnsOrderedList() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(15);
+            tree.insert(20);
+
+            //Act
+            List<Integer> result = tree.inOrder();
+
+            //Assert
+            assertEquals(List.of(10, 15, 20), result);
+        }
+
+        @DisplayName("El metodo inOrder devuelve correctamente los nodos para un árbol con solo subárbol izquierdo")
+        @Test
+        public void inOrder_LeftSubtreeOnly_ReturnsOrderedList() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(5);
+            tree.insert(2);
+
+            //Act
+            List<Integer> result = tree.inOrder();
+
+            //Assert
+            assertEquals(List.of(2, 5, 10), result);
+        }
+
+        @DisplayName("El metodo inOrder devuelve correctamente los nodos para un árbol con subárbol izquierdo y derecho")
+        @Test
+        public void inOrder_LeftAndRightSubtrees_ReturnsOrderedList() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(5);
+            tree.insert(15);
+            tree.insert(2);
+            tree.insert(7);
+            tree.insert(12);
+            tree.insert(20);
+
+            //Act
+            List<Integer> result = tree.inOrder();
+
+            //Assert
+            assertEquals(List.of(2, 5, 7, 10, 12, 15, 20), result);
+        }
     }
+
 
     @DisplayName("Probando el metodo balance")
     @Nested
