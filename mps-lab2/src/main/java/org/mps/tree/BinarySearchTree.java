@@ -248,33 +248,22 @@ public class BinarySearchTree<T> implements BinarySearchTreeStructure<T> {
 
     @Override
     public void balance() {
-        List<T> nodes = inOrder();
-        balanceHelper(nodes, 0, nodes.size() - 1);
+        List<T> lista = this.inOrder();
+        this.removeBranch(this.value);
+        if(!lista.isEmpty()) {
+            balanceAux(lista);
+        }
     }
 
-    private void balanceHelper(List<T> nodes, int start, int end) {
-        if (start > end) {
-            this.value = null;
-            this.left = null;
-            this.right = null;
-            return;
-        }
-
-        int mid = (start + end) / 2;
-        this.value = nodes.get(mid);
-
-        if (start <= mid - 1) {
-            this.left = new BinarySearchTree<>(this.comparator);
-            this.left.balanceHelper(nodes, start, mid - 1);
-        } else {
-            this.left = null;
-        }
-
-        if (mid + 1 <= end) {
-            this.right = new BinarySearchTree<>(this.comparator);
-            this.right.balanceHelper(nodes, mid + 1, end);
-        } else {
-            this.right = null;
+    private void balanceAux(List<T> lista) {
+        this.insert(lista.get(lista.size() / 2));
+        if(lista.size() == 2) {
+            this.insert(lista.get(0));
+        } else if (lista.size() > 2) {
+            left = new BinarySearchTree<>(this.comparator);
+            this.left.balanceAux(lista.subList(0, lista.size()/2));
+            right = new BinarySearchTree<>(this.comparator);
+            this.right.balanceAux(lista.subList((lista.size()/2) + 1, lista.size()));
         }
     }
 }
