@@ -249,8 +249,8 @@ public class BinarySearchTree<T> implements BinarySearchTreeStructure<T> {
     @Override
     public void balance() {
         List<T> lista = this.inOrder();
-        this.removeBranch(this.value);
         if(!lista.isEmpty()) {
+            this.removeBranch(this.value);
             balanceAux(lista);
         }
     }

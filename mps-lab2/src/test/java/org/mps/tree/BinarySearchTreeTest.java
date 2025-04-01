@@ -1096,5 +1096,121 @@ public class BinarySearchTreeTest {
         public void setUp() {
             tree = new BinarySearchTree<>(comparator);
         }
+
+        @DisplayName("El metodo balance no hace nada si el árbol está vacío")
+        @Test
+        public void balance_EmptyTree_DoesNothing() {
+            //Arrange: Árbol vacío
+
+            //Act
+            tree.balance();
+
+            //Assert
+            assertEquals("", tree.render());
+        }
+
+        @DisplayName("El metodo balance mantiene un árbol con un solo nodo")
+        @Test
+        public void balance_SingleNodeTree_RemainsUnchanged() {
+            //Arrange
+            tree.insert(10);
+
+            //Act
+            tree.balance();
+
+            //Assert
+            assertEquals("10", tree.render());
+        }
+
+        @DisplayName("El metodo balance balancea un árbol con solo subárbol izquierdo")
+        @Test
+        public void balance_LeftSubtreeOnly_BalancesTree() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(5);
+            tree.insert(2);
+
+            //Act
+            tree.balance();
+
+            //Assert
+            assertEquals("5(2,10)", tree.render());
+        }
+
+        @DisplayName("El metodo balance balancea un árbol con solo subárbol derecho")
+        @Test
+        public void balance_RightSubtreeOnly_BalancesTree() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(15);
+            tree.insert(20);
+
+            //Act
+            tree.balance();
+
+            //Assert
+            assertEquals("15(10,20)", tree.render());
+        }
+
+        @DisplayName("El metodo balance balancea un árbol con subárboles izquierdo y derecho")
+        @Test
+        public void balance_LeftAndRightSubtrees_BalancesTree() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(5);
+            tree.insert(15);
+            tree.insert(9);
+            tree.insert(7);
+            tree.insert(12);
+            tree.insert(13);
+
+            //Act
+            tree.balance();
+
+            //Assert
+            assertEquals("10(7(5,9),13(12,15))", tree.render());
+        }
+
+        @DisplayName("El metodo balance balancea un árbol con varios niveles desbalanceados")
+        @Test
+        public void balance_MultiLevelUnbalancedTree_BalancesTree() {
+            //Arrange
+            tree.insert(50);
+            tree.insert(40);
+            tree.insert(60);
+            tree.insert(30);
+            tree.insert(45);
+            tree.insert(55);
+            tree.insert(70);
+            tree.insert(20);
+            tree.insert(35);
+
+            //Act
+            tree.balance();
+
+            //Assert
+            assertEquals("45(35(30(20,),40),60(55(50,),70))", tree.render());
+        }
+
+        @DisplayName("El metodo balance no altera un árbol que ya está balanceado")
+        @Test
+        public void balance_AlreadyBalancedTree_RemainsUnchanged() {
+            //Arrange
+            tree.insert(10);
+            tree.insert(5);
+            tree.insert(15);
+            tree.insert(2);
+            tree.insert(7);
+            tree.insert(12);
+            tree.insert(20);
+            String balancedTree = tree.render();
+
+            //Act
+            tree.balance();
+
+            //Assert
+            assertEquals(balancedTree, tree.render());
+            assertEquals("10(5(2,7),15(12,20))", tree.render());
+        }
     }
 }
