@@ -8,6 +8,9 @@ Partiendo de la implementación de ClubDeportivo, realizar las pruebas unitarias
 
 Un árbol de búsqueda binario es un tipo de árbol binario en el cual cada nodo consiste en un valor y dos sub-árboles, y para cada nodo, todos los valores que se encuentran en el sub-árbol izquierdo son menores que el valor del nodo, y todos los valores que se encuentran en el sub-árbol derecho son mayores que el valor del nodo. La interfaz BinarySearchTreeStructure<T> declara las operaciones básicas de un árbol de búsqueda binario.
 
+##  Laboratorio 3: pruebas unitarias y test doubles
+Dado un proyecto para la detección de ronquidos, se pide realizar las pruebas unitarias correspondientes para probar determinadas funcionalidades que están aún en desarrollo, como el nuevo dispositivo RonQi2Silver. El dispositivo a partir de medidas de presión y sonido evalua si ha habido apnea del sueño.
+
 ## Autores
 
 - Pablo Gámez Guerrero
