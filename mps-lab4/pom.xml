@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
-  <groupId>org.mps</groupId>
-  <artifactId>mps4</artifactId>
-  <version>1.0-SNAPSHOT</version>
-
-  <name>mps4</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	 <maven.compiler.source>21</maven.compiler.source>
-     <maven.compiler.target>21</maven.compiler.target>
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<!--Informacion del proyecto -->
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>es.uma</groupId>
+	<artifactId>mps-lab4</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	
+	<!--Propiedades del proyecto y maven-->
+	 <properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    	<maven.compiler.source>21</maven.compiler.source>
+    	<maven.compiler.target>21</maven.compiler.target>
   </properties>
 
-  <!--Reutilizar versiones para las dependencias -->
+	<!--Reutilizar versiones para las dependencias -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.junit</groupId>
 				<artifactId>junit-bom</artifactId>
-				<version>5.10.1</version>
+     			 <version>5.12.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -34,6 +31,11 @@
 	<!--Dependencias de Maven -->
 	<dependencies>
 	<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>4.18.1</version>
+</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
@@ -62,7 +64,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.2.1</version>
+				<version>3.5.2</version>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
