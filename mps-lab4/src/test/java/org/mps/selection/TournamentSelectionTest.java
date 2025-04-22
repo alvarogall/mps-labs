@@ -16,8 +16,6 @@ import org.mps.crossover.TwoPointCrossover;
  * @author Álvaro Gallardo Rubio
  */
 
- //YOOOOOOOO
-
 public class TournamentSelectionTest {
     @DisplayName("Probar el constructor")
     @Nested
