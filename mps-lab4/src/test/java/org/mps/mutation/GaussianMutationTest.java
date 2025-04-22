@@ -21,8 +21,8 @@ public class GaussianMutationTest {
     @Nested
     public class GaussianMutationConstructorTest {
         @Test
-        @DisplayName("Constructor sin parámetros inicializa con ratio y desviación a cero")
-        public void gaussianMutation_DefaultConstructor_NotMutation() throws EvolutionaryAlgorithmException {
+        @DisplayName("Crear una instancia de mutación gaussiana sin parámetros inicializa ratio y desviación a cero")
+        public void gaussianMutation_DefaultConstructor_CreatedInstance() throws EvolutionaryAlgorithmException {
             // Arrange
             int[] individuos = {1, 2, 3};
 
@@ -34,8 +34,8 @@ public class GaussianMutationTest {
         }
 
         @Test
-        @DisplayName("Constructor con ratio a cero no provoca mutación")
-        public void gaussianMutation_ParametersConstructorZeroRatio_NotMutation() throws EvolutionaryAlgorithmException {
+        @DisplayName("Crear una instancia de mutación gaussiana con parámetros inicializa ratio y desviación a esos parámetros")
+        public void gaussianMutation_ParametersConstructorZeroRatio_CreatedInstance() throws EvolutionaryAlgorithmException {
             // Arrange
             int[] individuos = {1, 2, 3};
             double mutationRate = 0.0;
@@ -46,36 +46,6 @@ public class GaussianMutationTest {
 
             // Assert
             assertTrue(Arrays.equals(individuos, mutation.mutate(individuos)));
-        }
-
-        @Test
-        @DisplayName("Constructor con desviación a cero no provoca mutación")
-        public void gaussianMutation_ParametersConstructorZeroDesviation_NotMutation() throws EvolutionaryAlgorithmException {
-            // Arrange
-            int[] individuos = {1, 2, 3};
-            double mutationRate = 0.0;
-            double standardDeviation = 0.7;
-
-            // Act
-            GaussianMutation mutation = new GaussianMutation(mutationRate, standardDeviation);
-
-            // Assert
-            assertTrue(Arrays.equals(individuos, mutation.mutate(individuos)));
-        }
-
-        @Test
-        @DisplayName("Constructor con ratio o desviación distinta de cero devuelve el mismo número de individuos mutados o no")
-        public void gaussianMutation_ParametersConstructorRatioAndDesviationNotZeroRatioIsOne_ProvokesMutation() throws EvolutionaryAlgorithmException {
-            // Arrange
-            int[] individuos = {1, 2, 3};
-            double mutationRate = 1.0;
-            double standardDeviation = 0.5;
-
-            // Act
-            GaussianMutation mutation = new GaussianMutation(mutationRate, standardDeviation);
-
-            // Assert
-            assertEquals(3, mutation.mutate(individuos).length);
         }
     }
 
@@ -108,7 +78,7 @@ public class GaussianMutationTest {
         }
 
         @Test
-        @DisplayName("Mutar con standardDeviation o mutationRate devuelve el mismo número de individuos mutados o no")
+        @DisplayName("Mutar con standardDeviation o mutationRate distinto de cero devuelve el mismo número de individuos mutados o no")
         public void mutate_ValidIndividual_ReturnsSameLength() throws EvolutionaryAlgorithmException {
             // Arrange
             GaussianMutation mutation = new GaussianMutation(1.0, 0.5);
