@@ -21,13 +21,13 @@ public class TwoPointCrossoverTest {
     @DisplayName("Probar que el constructor se crea correctamente")
     @Test
     public void twoPointCrossover_FuncionaCorrectamente() {
-        //Arrange
+        // Arrange
         TwoPointCrossover twoPointCrossover;
 
-        //Act
+        // Act
         twoPointCrossover = new TwoPointCrossover();
 
-        //Assert
+        // Assert
         assertNotNull(twoPointCrossover);
     }
 
@@ -39,7 +39,7 @@ public class TwoPointCrossoverTest {
         @DisplayName("Se inicializa twoPointCrossover para cada test")
         @BeforeEach
         public void startUp() {
-            //Arrange
+            // Arrange
             twoPointCrossover = new TwoPointCrossover();
         }
 
