@@ -1,28 +1,19 @@
 package org.mps.boundedqueue;
 
-<<<<<<< HEAD
-=======
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.Iterator;
->>>>>>> a1333ffc330f6ef6fc24a1cac3b2e39e93e4f493
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-<<<<<<< HEAD
-import static org.assertj.core.api.Assertions.*;
-
-=======
->>>>>>> a1333ffc330f6ef6fc24a1cac3b2e39e93e4f493
 /**
  * @author Pablo Gámez Guerrero
  * @author Álvaro Gallardo Rubio
  */
 
 public class ArrayBoundedQueueTest {
-<<<<<<< HEAD
     @DisplayName("Probar el constructor")
     @Nested
     public class ArrayBoundedQueueConstructorTest {
@@ -46,7 +37,41 @@ public class ArrayBoundedQueueTest {
             assertThat(arrayBoundedQueue.getLast())
                 .isEqualTo(0);
             assertThat(arrayBoundedQueue.size())
-=======
+                .isEqualTo(0);
+        }
+
+        @Test
+        @DisplayName("El constructor creado con una capacidad menor o igual a 0 lanza excepción")
+        public void ArrayBoundedQueue_CapacityLessThanOrEqualTo_ThrowsException() {
+            // Arrange
+            int capacity = 0;
+
+            // Act, Assert
+            assertThatExceptionOfType(IllegalArgumentException.class)
+            .isThrownBy(() -> {
+                new ArrayBoundedQueue<>(capacity);
+            })
+            .withMessage("ArrayBoundedException: capacity must be positive");
+        }
+    }
+
+    @DisplayName("Probar el método put")
+    @Nested
+    public class putTest {
+        ArrayBoundedQueue<Integer> arrayBoundedQueue;
+
+        @DisplayName("Se inicializa arrayBoundedQueue con una capacidad concreta para cada test")
+        @BeforeEach
+        public void startUp() {
+            // Arrange
+            arrayBoundedQueue = new ArrayBoundedQueue<>(7);
+        }
+
+        //@DisplayName("")
+        //@Test
+
+    }
+
     /**
     * Para no modificar la implementación se interpreta que getLast devuelve el
     * índice de la siguiente posición libre, no del último elemento como se define
@@ -166,46 +191,10 @@ public class ArrayBoundedQueueTest {
 
             // Assert
             assertThat(resultado)
->>>>>>> a1333ffc330f6ef6fc24a1cac3b2e39e93e4f493
                 .isEqualTo(0);
         }
 
         @Test
-<<<<<<< HEAD
-        @DisplayName("El constructor creado con una capacidad menor o igual a 0 lanza excepción")
-        public void ArrayBoundedQueue_CapacityLessThanOrEqualTo_ThrowsException() {
-            // Arrange
-            int capacity = 0;
-
-            // Act, Assert
-            assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() -> {
-                new ArrayBoundedQueue<>(capacity);
-            })
-            .withMessage("ArrayBoundedException: capacity must be positive");
-        }
-    }
-
-    @DisplayName("Probar el método put")
-    @Nested
-    public class putTest {
-        ArrayBoundedQueue<Integer> arrayBoundedQueue;
-
-        @DisplayName("Se inicializa arrayBoundedQueue con una capacidad concreta para cada test")
-        @BeforeEach
-        public void startUp() {
-            // Arrange
-            arrayBoundedQueue = new ArrayBoundedQueue<>(7);
-        }
-
-        //@DisplayName("")
-        //@Test
-
-    }
-
-
-}
-=======
         @DisplayName("Obtener el tamaño de una cola con elemntos")
         public void size_ColaConElementos_DevuelveTamañoCola() {
             // Arrange
@@ -361,4 +350,3 @@ public class ArrayBoundedQueueTest {
         }
     }
 }
->>>>>>> a1333ffc330f6ef6fc24a1cac3b2e39e93e4f493
