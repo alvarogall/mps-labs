@@ -13,6 +13,11 @@ import org.junit.jupiter.api.Test;
  * @author Álvaro Gallardo Rubio
  */
 
+/**
+ * Para no modificar la implementación se interpreta que getLast devuelve el
+ * índice de la siguiente posición libre, no del último elemento como se define
+ * en la interfaz
+ */
 public class ArrayBoundedQueueTest {
     @DisplayName("Probar el constructor")
     @Nested
@@ -105,13 +110,6 @@ public class ArrayBoundedQueueTest {
             .withMessage("put: element cannot be null");
         }
     }
-
-    /**
-    * Para no modificar la implementación se interpreta que getLast devuelve el
-    * índice de la siguiente posición libre, no del último elemento como se define
-    * en la interfaz
-    */
-
 
     @DisplayName("Probar función isFull")
     @Nested
