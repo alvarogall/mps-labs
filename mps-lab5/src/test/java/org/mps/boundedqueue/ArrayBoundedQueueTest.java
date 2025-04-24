@@ -67,9 +67,43 @@ public class ArrayBoundedQueueTest {
             arrayBoundedQueue = new ArrayBoundedQueue<>(7);
         }
 
-        //@DisplayName("")
-        //@Test
+        @DisplayName("Hacer un put con una cola acotada llena lanza excepción")
+        @Test
+        public void put_FullBoundedQueue_ThrowsException() {
+            // Arrange
+            arrayBoundedQueue.put(13);
+            arrayBoundedQueue.put(23);
+            arrayBoundedQueue.put(3);
+            arrayBoundedQueue.put(31);
+            arrayBoundedQueue.put(22);
+            arrayBoundedQueue.put(0);
+            arrayBoundedQueue.put(7);
+            Integer value = 27;
 
+            // Act, Assert
+            assertThatExceptionOfType(FullBoundedQueueException.class)
+            .isThrownBy(() -> {
+                arrayBoundedQueue.put(value);
+            })
+            .withMessage("put: full bounded queue");
+        }
+        
+        @DisplayName("Hacer un put con un elemento null lanza excepción")
+        @Test
+        public void put_NullElement_ThrowsException() {
+            // Arrange
+            arrayBoundedQueue.put(13);
+            arrayBoundedQueue.put(23);
+            arrayBoundedQueue.put(3);
+            Integer value = null;
+
+            // Act, Assert
+            assertThatExceptionOfType(IllegalArgumentException.class)
+            .isThrownBy(() -> {
+                arrayBoundedQueue.put(value);
+            })
+            .withMessage("put: element cannot be null");
+        }
     }
 
     /**
