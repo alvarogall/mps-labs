@@ -24,6 +24,7 @@ jobs:
           - mps-lab2
           - mps-lab3
           - mps-lab4
+          - mps-lab5
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 21
