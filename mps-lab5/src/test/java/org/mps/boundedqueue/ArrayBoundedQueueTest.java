@@ -174,7 +174,7 @@ public class ArrayBoundedQueueTest {
         }
         
         @Test
-        @DisplayName("Hacer un put con una cola acotada llena después de hacer un get añade un elemento al principio del buffer")
+        @DisplayName("Hacer un put con una cola acotada llena después de hacer un get añade un elemento al principio de la cola")
         public void put_FullBoundedQueueAfterGet_WorksCorrectly() {
             // Arrange
             arrayBoundedQueue.put(13);
@@ -293,8 +293,8 @@ public class ArrayBoundedQueueTest {
        
 
         @Test
-        @DisplayName("Hacer un get, con una cola acotada llena después de hacer un get y seguidamente unos puts, devuelve el elemento del principio del buffer")
-        public void get_FullBoundedQueueAfterGetAndPuts_WorksCorrectly() {
+        @DisplayName("Hacer un get, con una cola acotada llena después de hacer un get y seguidamente uno put, devuelve el elemento del principio de la cola")
+        public void get_FullBoundedQueueAfterGetAndPut_WorksCorrectly() {
             // Arrange
             arrayBoundedQueue.put(13);
             arrayBoundedQueue.put(23);
@@ -304,28 +304,20 @@ public class ArrayBoundedQueueTest {
             arrayBoundedQueue.put(0);
             arrayBoundedQueue.put(7);
             arrayBoundedQueue.get();
-            arrayBoundedQueue.get();
-            arrayBoundedQueue.get();
-            arrayBoundedQueue.get();
-            arrayBoundedQueue.get();
-            arrayBoundedQueue.get();
-            arrayBoundedQueue.get();
             arrayBoundedQueue.put(15);
-            arrayBoundedQueue.put(33);
-            arrayBoundedQueue.put(8);
 
             // Act
             Integer value = arrayBoundedQueue.get();
 
             // Assert
             assertThat(value)
-                .isEqualTo(15);
+                .isEqualTo(23);
             assertThat(arrayBoundedQueue.getLast())
-                .isEqualTo(3);
-            assertThat(arrayBoundedQueue.getFirst())
                 .isEqualTo(1);
-            assertThat(arrayBoundedQueue.size())
+            assertThat(arrayBoundedQueue.getFirst())
                 .isEqualTo(2);
+            assertThat(arrayBoundedQueue.size())
+                .isEqualTo(6);
             assertThat(arrayBoundedQueue.isFull())
                 .isFalse();
         }
