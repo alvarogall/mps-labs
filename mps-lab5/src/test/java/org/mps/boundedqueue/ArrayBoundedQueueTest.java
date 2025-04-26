@@ -1,6 +1,7 @@
 package org.mps.boundedqueue;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Answers.values;
 
 import java.util.Iterator;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,8 +73,8 @@ public class ArrayBoundedQueueTest {
             arrayBoundedQueue = new ArrayBoundedQueue<>(7);
         }
 
-        @DisplayName("Hacer un put con una cola acotada llena lanza excepción")
         @Test
+        @DisplayName("Hacer un put con una cola acotada llena lanza excepción")
         public void put_FullBoundedQueue_ThrowsException() {
             // Arrange
             arrayBoundedQueue.put(13);
@@ -93,8 +94,8 @@ public class ArrayBoundedQueueTest {
             .withMessage("put: full bounded queue");
         }
         
-        @DisplayName("Hacer un put con un elemento null lanza excepción")
         @Test
+        @DisplayName("Hacer un put con un elemento null lanza excepción")
         public void put_NullElement_ThrowsException() {
             // Arrange
             arrayBoundedQueue.put(13);
@@ -108,6 +109,217 @@ public class ArrayBoundedQueueTest {
                 arrayBoundedQueue.put(value);
             })
             .withMessage("put: element cannot be null");
+        }
+
+        @Test
+        @DisplayName("Hacer un put con una cola acotada vacía funciona correctamente")
+        public void put_EmptyBoundedQueue_WorksCorrectly() {
+            // Arrange
+            Integer value = 27;
+
+            // Act
+            arrayBoundedQueue.put(value);
+
+            // Assert
+            assertThat(arrayBoundedQueue.getLast())
+                .isEqualTo(1);
+            assertThat(arrayBoundedQueue.size())
+                .isEqualTo(1);
+            assertThat(arrayBoundedQueue.isEmpty())
+                .isFalse();
+        }
+        
+        @Test
+        @DisplayName("Hacer un put con una cola acotada con elementos funciona correctamente")
+        public void put_BoundedQueueWithElements_WorksCorrectly() {
+            // Arrange
+            arrayBoundedQueue.put(13);
+            arrayBoundedQueue.put(23);
+            arrayBoundedQueue.put(3);
+            arrayBoundedQueue.put(31);
+            Integer value = 27;
+
+            // Act
+            arrayBoundedQueue.put(value);
+
+            // Assert
+            assertThat(arrayBoundedQueue.getLast())
+                .isEqualTo(5);
+            assertThat(arrayBoundedQueue.size())
+                .isEqualTo(5);
+        }
+        
+        @Test
+        @DisplayName("Hacer un put con una cola acotada con número de elementos (capacidad-1) pasa a cola llena y funciona correctamente")
+        public void put_BoundedQueueWithCapacityMinus1Elements_WorksCorrectly() {
+            // Arrange
+            arrayBoundedQueue.put(13);
+            arrayBoundedQueue.put(23);
+            arrayBoundedQueue.put(3);
+            arrayBoundedQueue.put(31);
+            arrayBoundedQueue.put(22);
+            arrayBoundedQueue.put(0);
+            Integer value = 27;
+
+            // Act
+            arrayBoundedQueue.put(value);
+
+            // Assert
+            assertThat(arrayBoundedQueue.getLast())
+                .isEqualTo(arrayBoundedQueue.getFirst()); // == 0
+            assertThat(arrayBoundedQueue.size())
+                .isEqualTo(7);
+            assertThat(arrayBoundedQueue.isFull())
+                .isTrue();
+        }
+        
+        @Test
+        @DisplayName("Hacer un put con una cola acotada llena después de hacer un get añade un elemento al principio de la cola")
+        public void put_FullBoundedQueueAfterGet_WorksCorrectly() {
+            // Arrange
+            arrayBoundedQueue.put(13);
+            arrayBoundedQueue.put(23);
+            arrayBoundedQueue.put(3);
+            arrayBoundedQueue.put(31);
+            arrayBoundedQueue.put(22);
+            arrayBoundedQueue.put(0);
+            arrayBoundedQueue.put(7);
+            arrayBoundedQueue.get();
+            Integer value = 27;
+
+            // Act
+            arrayBoundedQueue.put(value);
+
+            // Assert
+            assertThat(arrayBoundedQueue.getLast())
+                .isEqualTo(arrayBoundedQueue.getFirst()); // == 1
+            assertThat(arrayBoundedQueue.size())
+                .isEqualTo(7);
+            assertThat(arrayBoundedQueue.isFull())
+                .isTrue();
+        }
+    }
+    
+    @DisplayName("Probar el método get")
+    @Nested
+    public class getTest {
+        ArrayBoundedQueue<Integer> arrayBoundedQueue;
+
+        @DisplayName("Se inicializa arrayBoundedQueue con una capacidad concreta para cada test")
+        @BeforeEach
+        public void startUp() {
+            // Arrange
+            arrayBoundedQueue = new ArrayBoundedQueue<>(7);
+        }
+
+        @Test
+        @DisplayName("Hacer un get con una cola acotada vacía lanza excepción")
+        public void get_EmptyBoundedQueue_ThrowsException() {
+            // Act, Assert
+            assertThatExceptionOfType(EmptyBoundedQueueException.class)
+            .isThrownBy(() -> {
+                arrayBoundedQueue.get();
+            })
+            .withMessage("get: empty bounded queue");
+        }
+
+        @Test
+        @DisplayName("Hacer un get con una cola acotada con elementos funciona correctamente")
+        public void get_BoundedQueueWithElements_WorksCorrectly() {
+            // Arrange
+            arrayBoundedQueue.put(13);
+            arrayBoundedQueue.put(23);
+            arrayBoundedQueue.put(3);
+            arrayBoundedQueue.put(31);
+
+            // Act
+            Integer value = arrayBoundedQueue.get();
+
+            // Assert
+            assertThat(value)
+                .isEqualTo(13);
+            assertThat(arrayBoundedQueue.getFirst())
+                .isEqualTo(1);
+            assertThat(arrayBoundedQueue.size())
+                .isEqualTo(3);
+        }
+
+        @Test
+        @DisplayName("Hacer un get con una cola acotada llena funciona correctamente")
+        public void get_FullBoundedQueue_WorksCorrectly() {
+            // Arrange
+            arrayBoundedQueue.put(13);
+            arrayBoundedQueue.put(23);
+            arrayBoundedQueue.put(3);
+            arrayBoundedQueue.put(31);
+            arrayBoundedQueue.put(22);
+            arrayBoundedQueue.put(0);
+            arrayBoundedQueue.put(7);
+
+            // Act
+            Integer value = arrayBoundedQueue.get();
+
+            // Assert
+            assertThat(value)
+                .isEqualTo(13);
+            assertThat(arrayBoundedQueue.getFirst())
+                .isEqualTo(1);
+            assertThat(arrayBoundedQueue.size())
+                .isEqualTo(6);
+            assertThat(arrayBoundedQueue.isFull())
+                .isFalse();
+        }
+
+        @Test
+        @DisplayName("Hacer un get con una cola acotada vacía después de hacer un put funciona correctamente")
+        public void get_EmptyBoundedQueueAfterPut_WorksCorrectly() {
+            // Arrange
+            arrayBoundedQueue.put(7);
+            
+            // Act
+            Integer value = arrayBoundedQueue.get();
+
+            // Assert
+            assertThat(value)
+                .isEqualTo(7);
+            assertThat(arrayBoundedQueue.getFirst())
+                .isEqualTo(arrayBoundedQueue.getLast()); // == 0
+            assertThat(arrayBoundedQueue.size())
+                .isEqualTo(0);
+            assertThat(arrayBoundedQueue.isEmpty())
+                .isTrue();
+        }
+
+       
+
+        @Test
+        @DisplayName("Hacer un get, con una cola acotada llena después de hacer un get y seguidamente uno put, devuelve el elemento del principio de la cola")
+        public void get_FullBoundedQueueAfterGetAndPut_WorksCorrectly() {
+            // Arrange
+            arrayBoundedQueue.put(13);
+            arrayBoundedQueue.put(23);
+            arrayBoundedQueue.put(3);
+            arrayBoundedQueue.put(31);
+            arrayBoundedQueue.put(22);
+            arrayBoundedQueue.put(0);
+            arrayBoundedQueue.put(7);
+            arrayBoundedQueue.get();
+            arrayBoundedQueue.put(15);
+
+            // Act
+            Integer value = arrayBoundedQueue.get();
+
+            // Assert
+            assertThat(value)
+                .isEqualTo(23);
+            assertThat(arrayBoundedQueue.getLast())
+                .isEqualTo(1);
+            assertThat(arrayBoundedQueue.getFirst())
+                .isEqualTo(2);
+            assertThat(arrayBoundedQueue.size())
+                .isEqualTo(6);
+            assertThat(arrayBoundedQueue.isFull())
+                .isFalse();
         }
     }
 
