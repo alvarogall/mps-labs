@@ -14,6 +14,9 @@ Dado un proyecto para la detección de ronquidos, se pide realizar las pruebas u
 ##  Laboratorio 4: Pruebas de caja blanca
 Realiza pruebas de caja blanca de un algoritmo de evolución proporcionado con el objetivo de evaluar todas las ramas por las que pasa el código (sin importar la cobertura de línea). La cobertura de ramas también será necesaria para las clases auxiliares del algoritmo evolution, que son el cruce, mutación y selección de candidatos.
 
+## Laboratorio 5: Asertos fluidos
+Realiza pruebas unitarias de la cola acotada BoundedQueue utilizando asertos fluidos (AssertJ) para mejorar la legibilidad del código. Una cola acotada es una cola cuya capacidad (número máximo de elementos que puede contener) se fija en el momento de su creación. La clase utiliza un array buffer para almacenar los elementos de la cola acotada. Este array se utiliza circularmente (usando aritmética modular). El array almacena los size elementos de la cola acotada dispuestos circularmente desde la posición first. El resto de posiciones del array desde nextFree está disponible.
+
 ## Autores
 
 - Pablo Gámez Guerrero
