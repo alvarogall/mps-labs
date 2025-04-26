@@ -1,9 +1,10 @@
 package org.mps.boundedqueue;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Answers.values;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -63,7 +64,7 @@ public class ArrayBoundedQueueTest {
 
     @DisplayName("Probar el método put")
     @Nested
-    public class putTest {
+    public class PutTest {
         ArrayBoundedQueue<Integer> arrayBoundedQueue;
 
         @DisplayName("Se inicializa arrayBoundedQueue con una capacidad concreta para cada test")
@@ -202,7 +203,7 @@ public class ArrayBoundedQueueTest {
     
     @DisplayName("Probar el método get")
     @Nested
-    public class getTest {
+    public class GetTest {
         ArrayBoundedQueue<Integer> arrayBoundedQueue;
 
         @DisplayName("Se inicializa arrayBoundedQueue con una capacidad concreta para cada test")
@@ -325,7 +326,7 @@ public class ArrayBoundedQueueTest {
 
     @DisplayName("Probar función isFull")
     @Nested
-    public class isFullTest {
+    public class IsFullTest {
         private ArrayBoundedQueue<Integer> cola;
 
         @BeforeEach
@@ -381,7 +382,7 @@ public class ArrayBoundedQueueTest {
 
     @DisplayName("Probar función isEmpty")
     @Nested
-    public class isEmptyTest {
+    public class IsEmptyTest {
         private ArrayBoundedQueue<Integer> cola;
 
         @BeforeEach
@@ -418,7 +419,7 @@ public class ArrayBoundedQueueTest {
 
     @DisplayName("Probar función size")
     @Nested
-    public class sizeTest {
+    public class SizeTest {
         private ArrayBoundedQueue<Integer> cola;
 
         @BeforeEach
@@ -457,7 +458,7 @@ public class ArrayBoundedQueueTest {
 
     @DisplayName("Probar función getFirst")
     @Nested
-    public class getFirstTest {
+    public class GetFirstTest {
         @Test
         @DisplayName("Obtener el índice del primer elemento de una cola vacía")
         public void getFirst_ColaVacia_DevuelveIndiceIgualAlSiguienteLibre() {
@@ -508,7 +509,7 @@ public class ArrayBoundedQueueTest {
 
     @DisplayName("Probar función getLast")
     @Nested
-    public class getLastTest {
+    public class GetLastTest {
         @Test
         @DisplayName("Obtener el índice de la siguiente posición libre de una cola vacía")
         public void getLast_ColaVacia_DevuelveIndiceIgualAlIndiceDelPrimero() {
@@ -557,7 +558,7 @@ public class ArrayBoundedQueueTest {
 
     @DisplayName("Probar función iterator")
     @Nested
-    public class iteratorTest {
+    public class IteratorTest {
         private ArrayBoundedQueue<Integer> cola;
 
         @BeforeEach
@@ -575,6 +576,10 @@ public class ArrayBoundedQueueTest {
             // Assert
             assertThat(iterador.hasNext())
                 .isFalse();
+            assertThatExceptionOfType(NoSuchElementException.class)
+                .isThrownBy(() -> {
+                    iterador.next();
+                });
         }
 
         @Test
@@ -591,10 +596,8 @@ public class ArrayBoundedQueueTest {
             // Assert
             assertThat(iterador.hasNext())
                 .isTrue();
+            assertThat(iterador.next())
+                .isEqualTo(1);
         }
     }
 }
-
-/*
- * Falta el 100% del iterator
- */
