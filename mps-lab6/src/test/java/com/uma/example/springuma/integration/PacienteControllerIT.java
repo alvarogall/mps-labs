@@ -25,6 +25,8 @@ public class PacienteControllerIT extends AbstractIntegration {
     @Autowired
     private ObjectMapper objectMapper;
 
+    // Asociar y editar pacientes a médicos. Así como el cambio de médico y detección del cambio.
+
     @Test
     @DisplayName("Asociar médico a paciente y comprobar que se ha asociado correctamente")
 	void asociar_pacienteConMedico() throws Exception {
@@ -39,7 +41,6 @@ public class PacienteControllerIT extends AbstractIntegration {
         paciente.setCita("17/05/2025");
         paciente.setDni("20843953F");
         paciente.setMedico(medico);
-        paciente.setId(1);
 
         // crea el médico
         this.mockMvc.perform(post("/medico")
@@ -80,7 +81,7 @@ public class PacienteControllerIT extends AbstractIntegration {
         paciente.setCita("17/05/2025");
         paciente.setDni("20843953F");
         paciente.setMedico(medico1);
-        paciente.setId(1);
+        paciente.setId(1); // es necesario para el put
 
         // crea el médico 1
         this.mockMvc.perform(post("/medico")
