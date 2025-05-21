@@ -24,6 +24,11 @@ import com.uma.example.springuma.model.Paciente;
 import jakarta.annotation.PostConstruct;
 import reactor.core.publisher.Mono;
 
+/**
+ * @author Pablo Gámez Guerrero
+ * @author Álvaro Gallardo Rubio
+ */
+
 @DisplayName("Integración ImagenController")
 public class ImagenControllerIT extends AbstractIntegration {
     private static final String IMAGEN_ENDPOINT = "/imagen";

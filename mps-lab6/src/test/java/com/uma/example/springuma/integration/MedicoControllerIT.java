@@ -11,6 +11,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uma.example.springuma.integration.base.AbstractIntegration;
 import com.uma.example.springuma.model.Medico;
 
+/**
+ * @author Pablo Gámez Guerrero
+ * @author Álvaro Gallardo Rubio
+ */
+
 @DisplayName("Integración MedicoController")
 public class MedicoControllerIT extends AbstractIntegration {
     private static final String MEDICO_ENDPOINT = "/medico";
