@@ -2,9 +2,14 @@ import http from "k6/http";
 import { check } from "k6";
 
 /**
+ * @author Pablo Gámez Guerrero
+ * @author Álvaro Gallardo Rubio
+ */
+
+/**
  * @type {import('k6/options').Options}
  */
-export const options = {
+export const options  = {
     vus: 5,
     duration: '1m',
     thresholds: {
