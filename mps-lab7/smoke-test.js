@@ -1,6 +1,9 @@
 import http from "k6/http";
 import { check } from "k6";
 
+/**
+ * @type {import('k6/options').Options}
+ */
 export const options  = {
     vus: 5,
     duration: '1m',
