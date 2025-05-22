@@ -19,3 +19,5 @@ buildNumber.properties
 
 **/.DS_Store
 .vscode
+
+mps-lab6/database.mv.db
