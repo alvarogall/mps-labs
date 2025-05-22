@@ -6,9 +6,6 @@ import http from 'k6/http';
 export const options = {
     scenarios: {
         spike: {
-            executor: 'ramping-arrival-rate',
-            preAllocatedVUs: 1000,
-            maxVUs: 1e7,
             stages: [
                 { duration: '2m', target: 4855 },
                 { duration: '2m', target: 0 },
