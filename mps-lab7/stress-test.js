@@ -1,6 +1,11 @@
 import http from 'k6/http';
 
 /**
+ * @author Pablo Gámez Guerrero
+ * @author Álvaro Gallardo Rubio
+ */
+
+/**
  * @type {import('k6/options').Options}
  */
 export const options = {

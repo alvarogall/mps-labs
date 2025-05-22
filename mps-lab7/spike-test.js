@@ -1,17 +1,18 @@
 import http from 'k6/http';
 
 /**
+ * @author Pablo Gámez Guerrero
+ * @author Álvaro Gallardo Rubio
+ */
+
+/**
  * @type {import('k6/options').Options}
  */
 export const options = {
-    scenarios: {
-        spike: {
-            stages: [
-                { duration: '2m', target: 4855 },
-                { duration: '2m', target: 0 },
-            ],
-        }
-    },
+    stages: [
+        { duration: '2m', target: 4855 },
+        { duration: '2m', target: 0 },
+    ],
     thresholds: {
         http_req_failed: [
             { threshold: 'rate<=0.005', abortOnFail: true },
