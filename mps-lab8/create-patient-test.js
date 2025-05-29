@@ -32,22 +32,24 @@ export default async function () {
 
     await Promise.all([page.waitForNavigation(), submitButton.click()]);
 
-    // Create patient
-    await page.goto('http://localhost:4200/paciente/create');
+    // Crear paciente
+    const addButton = page.locator('button[name="add"]');
 
-    await page.locator('input[name="dni"]').type('1234');
-    await page.locator('input[name="nombre"]').type('Paco');
-    await page.locator('input[name="edad"]').type('edad');
-    await page.locator('input[name="cita"]').type('cita');
+    await Promise.all([page.waitForNavigation(), addButton.click()]);
 
-    const createButton = page.locator('input[type="submit"]');
+    await page.locator('input[name="dni"]').type('123');
+    await page.locator('input[name="nombre"]').type('nombre');
 
-    await Promise.all([page.waitForNavigation(), submitButton.click()]);
+    const createButton = page.locator('button[type="submit"]');
 
+    await Promise.all([page.waitForNavigation(), createButton.click()]);
+
+    // Comprobar paciente
     let len = await page.$$("table tbody tr").length;
 
     await check(page.locator('table'), {
-        header: async (lo) => (await parseInt(lo.$$("table tbody tr")[len-1].$('td[name="ccc"]').textContent())) == 12345
+        nombre: async (lo) => (await parseInt(lo.$$("table tbody tr")[len-1].$('td[name="nombre"]').textContent())) == nombre-paciente,
+        dni: async (lo) => (await parseInt(lo.$$("table tbody tr")[len-1].$('td[name="dni"]').textContent())) == dni-paciente
     });
   } finally {
     await page.close();

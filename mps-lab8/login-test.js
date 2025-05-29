@@ -21,6 +21,7 @@ export default async function () {
   const page = await browser.newPage();
 
   try {
+    // Login
     await page.goto('http://localhost:4200/');
 
     await page.locator('input[name="nombre"]').type('nombre');
@@ -30,6 +31,7 @@ export default async function () {
 
     await Promise.all([page.waitForNavigation(), submitButton.click()]);
 
+    // Comprobar login
     await check(page.locator('h2'), {
       header: async (lo) => (await lo.textContent()) == 'Listado de pacientes',
     });
