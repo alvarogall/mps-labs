@@ -1,26 +1,24 @@
-
 import { browser } from 'k6/browser';
 import { check } from 'https://jslib.k6.io/k6-utils/1.5.0/index.js';
 
 export const options = {
   scenarios: {
     ui: {
-      executor: 'shared-iterations',
+      executor: 'shared-iterations', // para realizar iteraciones sin indicar el tiempo
       options: {
         browser: {
           type: 'chromium',
-        },
-      },
-    },
+        }
+      }
+    }
   },
   thresholds: {
-    checks: ['rate==1.0'],
-  },
-};
+    checks: ["rate==1.0"]
+  }
+}
 
 export default async function () {
   const page = await browser.newPage();
-
   try {
     // Login
     await page.goto('http://localhost:4200/');
@@ -32,30 +30,27 @@ export default async function () {
 
     await Promise.all([page.waitForNavigation(), submitButton.click()]);
 
-    // Acceder imagen del paciente
-    let pacienteRow = page.locator("table tbody tr:first-child");
+    // Acceder al paciente
+    const firstRow1 = page.locator('table tbody tr:first-child');
+    await Promise.all([page.waitForNavigation(), firstRow1.click()]);
 
-    await Promise.all([page.waitForNavigation(), pacienteRow.click()]);
-
-    const viewButton = page.locator('table tbody tr:first-child button[name="view"]');
-
+    // Acceder a la imagen del paciente
+    const viewButton = page.locator('table tbody tr:first-child td button[name="view"]');
     await Promise.all([page.waitForNavigation(), viewButton.click()]);
 
-    await Promise.all([page.waitForNavigation(), submitButton.click()]);
+    // Realizar un informe
+    const predictButton = page.locator('button[name="add"]');
+    await Promise.all([page.waitForNavigation(), predictButton.click()]);
 
-    // Realizar predicción imagen del paciente
-    const addButton = page.locator('button[name="add"]');
+    await page.locator('textarea').type('Este es un informe de prueba para la creación de un reporte.');
 
-    await Promise.all([page.waitForNavigation(), addButton.click()]);
+    const saveButton = page.locator('button[name="save"]');
+    await Promise.all([page.waitForNavigation(), saveButton.click()]);
 
-    await Promise.all([page.waitForNavigation(), submitButton.click()]);
-
-    /*
-    await check(page.locator('table'), {
-        nombre: async (lo) => (await parseInt(lo.$$("table tbody tr")[len-1].$('td[name="nombre"]').textContent())) == nombre-paciente,
-        dni: async (lo) => (await parseInt(lo.$$("table tbody tr")[len-1].$('td[name="dni"]').textContent())) == dni-paciente
+    // Comprobar que el informe se ha creado correctamente
+    await check(page.locator('span[name="content"]'), {
+      report: async (lo) => (await lo.textContent()) == 'Este es un informe de prueba para la creación de un reporte.',
     });
-    */
   } finally {
     await page.close();
   }
