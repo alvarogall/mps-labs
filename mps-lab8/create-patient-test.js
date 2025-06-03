@@ -1,4 +1,3 @@
-
 import { browser } from 'k6/browser';
 import { check } from 'https://jslib.k6.io/k6-utils/1.5.0/index.js';
 
@@ -25,7 +24,7 @@ export default async function () {
     // Login
     await page.goto('http://localhost:4200/');
 
-    await page.locator('input[name="nombre"]').type('nombre');
+    await page.locator('input[name="nombre"]').type('Manuel');
     await page.locator('input[name="DNI"]').type('123');
 
     const submitButton = page.locator('button[name="login"]');
@@ -48,8 +47,8 @@ export default async function () {
     let len = await page.$$("table tbody tr").length;
 
     await check(page.locator('table'), {
-        nombre: async (lo) => (await parseInt(lo.$$("table tbody tr")[len-1].$('td[name="nombre"]').textContent())) == nombre-paciente,
-        dni: async (lo) => (await parseInt(lo.$$("table tbody tr")[len-1].$('td[name="dni"]').textContent())) == dni-paciente
+        nombre: async (lo) => (await parseInt(lo.$$("table tbody tr")[len-1].$('td[name="nombre"]').textContent())) == 'nombre',
+        dni: async (lo) => (await parseInt(lo.$$("table tbody tr")[len-1].$('td[name="dni"]').textContent())) == 123
     });
   } finally {
     await page.close();
