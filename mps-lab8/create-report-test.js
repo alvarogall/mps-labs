@@ -49,7 +49,7 @@ export default async function () {
 
     // Comprobar que el informe se ha creado correctamente
     await check(page.locator('span[name="content"]'), {
-      report: async (lo) => (await lo.textContent()) == 'Este es un informe de prueba para la creación de un reporte.',
+      'Informe creado correctamente': async (lo) => (await lo.textContent()) == 'Este es un informe de prueba para la creación de un reporte.',
     });
   } finally {
     await page.close();

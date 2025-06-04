@@ -44,11 +44,20 @@ export default async function () {
     await Promise.all([page.waitForNavigation(), createButton.click()]);
 
     // Comprobar paciente
-    let len = await page.$$("table tbody tr").length;
+    await page.waitForSelector("table tbody");
+    const patient = await page.evaluate(() => {
+        const rows = document.querySelectorAll('table tbody tr');
+        const lastRow = rows[rows.length - 1];
+        if (!lastRow) return null;
+        return {
+            name: lastRow.querySelector('td[name="nombre"]')?.textContent.trim(),
+            dni: lastRow.querySelector('td[name="dni"]')?.textContent.trim(),
+        };
+    });
 
-    await check(page.locator('table'), {
-        nombre: async (lo) => (await lo.$$("table tbody tr")[len-1].$('td[name="nombre"]').textContent()) == 'nombre',
-        dni: async (lo) => (await parseInt(lo.$$("table tbody tr")[len-1].$('td[name="dni"]').textContent())) == 123
+    check(patient, {
+        'Paciente creado correctamente (nombre)': (patient) => patient?.name === 'nombre',
+        'Paciente creado correctamente (dni)': (patient) => patient?.dni === '123',
     });
   } finally {
     await page.close();

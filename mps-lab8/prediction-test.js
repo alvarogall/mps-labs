@@ -46,7 +46,7 @@ export default async function () {
     // Comprobar que la predicción se ha realizado correctamente
     await page.waitForSelector('span[name="predict"]');
     await check(page.locator('span[name="predict"]'), {
-      prediction: async (lo) => (await lo.textContent())?.includes('Probabilidad de cáncer: '),
+      'Predicción realizada correctamente': async (lo) => (await lo.textContent())?.includes('Probabilidad de cáncer: '),
     });
   } finally {
     await page.close();

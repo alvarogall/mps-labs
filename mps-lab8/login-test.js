@@ -33,7 +33,7 @@ export default async function () {
 
     // Comprobar login
     await check(page.locator('h2'), {
-      header: async (lo) => (await lo.textContent()) == 'Listado de pacientes',
+      'Login funciona correctamente': async (lo) => (await lo.textContent()) == 'Listado de pacientes',
     });
   } finally {
     await page.close();
