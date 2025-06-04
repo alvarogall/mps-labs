@@ -56,8 +56,8 @@ export default async function () {
     });
 
     check(patient, {
-        'Paciente creado correctamente (nombre)': (patient) => patient?.name === 'nombre',
-        'Paciente creado correctamente (dni)': (patient) => patient?.dni === '123',
+        'Paciente creado correctamente (compruebo nombre)': (patient) => patient?.name === 'nombre',
+        'Paciente creado correctamente (compruebo dni)': (patient) => patient?.dni === '123',
     });
   } finally {
     await page.close();
