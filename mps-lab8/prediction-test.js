@@ -41,12 +41,12 @@ export default async function () {
 
     // Realizar predicción imagen del paciente
     const predictButton = page.locator('button[name="predict"]');
-    await Promise.all([page.waitForNavigation(), predictButton.click()]);
+    await Promise.all([page.waitForTimeout(5), predictButton.click()]);
 
     // Comprobar que la predicción se ha realizado correctamente
     await page.waitForSelector('span[name="predict"]');
     await check(page.locator('span[name="predict"]'), {
-      prediction: async (lo) => (await lo.textContent())?.includes('Probabilidad de cáncer:'),
+      prediction: async (lo) => (await lo.textContent())?.includes('Probabilidad de cáncer: '),
     });
   } finally {
     await page.close();

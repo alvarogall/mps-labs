@@ -47,7 +47,7 @@ export default async function () {
     let len = await page.$$("table tbody tr").length;
 
     await check(page.locator('table'), {
-        nombre: async (lo) => (await parseInt(lo.$$("table tbody tr")[len-1].$('td[name="nombre"]').textContent())) == 'nombre',
+        nombre: async (lo) => (await lo.$$("table tbody tr")[len-1].$('td[name="nombre"]').textContent()) == 'nombre',
         dni: async (lo) => (await parseInt(lo.$$("table tbody tr")[len-1].$('td[name="dni"]').textContent())) == 123
     });
   } finally {
